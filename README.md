@@ -21,7 +21,6 @@ use simplebyteunit::simplebyteunit::*;
 let byteunit_var = 500000.to_byteunit(SI);
 
 println!("{byteunit_var}");
-
 ```
 
 Output:

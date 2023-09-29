@@ -1,7 +1,7 @@
 /*  
  * SimpleByteUnit
  * 
- * Copyright 2023 Xaver R.M.
+ * Copyright 2023 Xavier R.M.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -39,8 +39,8 @@ fn format_all() {
     assert_eq!(POSITIVE_5G.to_byteunit(SI).to_string(), "5.00 GB");  
     assert_eq!(POSITIVE_5K.to_byteunit(SI).to_string(), "5.00 MB"); 
     assert_eq!(NEGATIVE_5K.to_byteunit(SI).to_string(), "-5.00 MB"); 
-    assert_eq!(POSITIVE_5B.to_byteunit(SI).to_string(), "5.00 KB");
-    assert_eq!(NEGATIVE_5B.to_byteunit(SI).to_string(), "-5.00 KB");
+    assert_eq!(POSITIVE_5B.to_byteunit(SI).to_string(), "5.00 kB");
+    assert_eq!(NEGATIVE_5B.to_byteunit(SI).to_string(), "-5.00 kB");
     assert_eq!(NEGATIVE_5E.to_byteunit(IEC).to_string(), "-4.34 EiB");   
     assert_eq!(POSITIVE_5E.to_byteunit(IEC).to_string(), "4.34 EiB");  
     assert_eq!(NEGATIVE_5P.to_byteunit(IEC).to_string(), "-4.44 PiB");   
@@ -73,8 +73,8 @@ fn bytes() {
 fn k() {
     assert_eq!(NEGATIVE_5K.to_byteunit(IEC).pow(K), "-4882.81 KiB");  
     assert_eq!(POSITIVE_5K.to_byteunit(IEC).pow(K), "4882.81 KiB");
-    assert_eq!(NEGATIVE_5K.to_byteunit(SI).pow(K), "-5000.00 KB"); 
-    assert_eq!(POSITIVE_5K.to_byteunit(SI).pow(K), "5000.00 KB"); 
+    assert_eq!(NEGATIVE_5K.to_byteunit(SI).pow(K), "-5000.00 kB"); 
+    assert_eq!(POSITIVE_5K.to_byteunit(SI).pow(K), "5000.00 kB"); 
 }
 
 #[test]
@@ -147,7 +147,7 @@ fn add() {
     let b = ByteUnit::SI(POSITIVE_5B);
     let division = a + b;
 
-    assert_eq!(division.to_string(), "10.00 KB");
+    assert_eq!(division.to_string(), "10.00 kB");
 }
 
 #[test]

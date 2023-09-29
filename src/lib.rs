@@ -19,7 +19,7 @@ Add 'simplebyteunit' to your 'Cargo.toml':
 
 ```toml
 [dependencies]
-simplebyteunit = "0.1.0"
+simplebyteunit = "0.2.0"
 ```
 
 ## Example
@@ -39,7 +39,7 @@ println!("{byteunit_var}");
 Output:
 
 ```shell
-500 KB
+500 kB
 ````
 
 ## Parsing strings into ByteUnits
@@ -49,7 +49,7 @@ And then you can parse formatted strings back into a ByteUnit
 ```rust
 use simplebyteunit::simplebyteunit::*;
 
-let byteunit_var: ByteUnit<i64> = "500 KB".into();
+let byteunit_var: ByteUnit<i64> = "500 kB".into();
 
 println!("{byteunit_var}");
 
@@ -58,7 +58,7 @@ println!("{byteunit_var}");
 Output:
 
 ```shell
-500 KB
+500 kB
 ````
 
 ## Simple arithmetic operations
@@ -102,7 +102,7 @@ Output:
 true
 ````
 
-Or operations are supported directly on this type:
+Or operations are also supported on this type:
 
 ```rust
 use simplebyteunit::simplebyteunit::*;
@@ -125,4 +125,5 @@ true
 pub mod simplebyteunit;
 
 mod input;
+mod output;
 mod test;

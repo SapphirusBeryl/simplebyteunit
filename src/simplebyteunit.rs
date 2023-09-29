@@ -18,7 +18,7 @@ Provides a simple way to encapsulate primitives as byteunits.
 
 use std::{fmt::{Display, Formatter}, 
     ops::{Mul, Div, Add, Sub}, str::FromStr};
-use crate::input::{parse_input, input_arithmetic};
+use crate::{input, output};
 
 /// IEC ByteUnit (x*1024)
 pub const IEC: ByteUnit<()> = ByteUnit::IEC(());
@@ -38,6 +38,8 @@ pub const M: i8 = 2;
 pub const K: i8 = 1;
 /// Base unit 
 pub const B: i8 = 0;
+/// Maximum supported power
+pub const MAX: i8 = E;
 
 /// Thin encapsulate of a supported, primitive integer to provide simple byteunit facilities 
 pub enum ByteUnit<T: Copy> {
@@ -91,52 +93,13 @@ impl <T>ByteUnit<T> where i64: From<T>, T: Copy {
         }
     }
 
-    fn unit_suffix<'a>(&self, i: i8) -> &'a str {
-        match self {
-            Self::IEC(_) => match i {
-                K => "KiB",
-                M => "MiB",
-                G => "GiB",
-                T => "TiB",
-                P => "PiB",
-                E => "EiB",
-                _ => "B"
-            },
-            Self::SI(_) => match i {
-                K => "KB",
-                M => "MB",
-                G => "GB",
-                T => "TB",
-                P => "PB",
-                E => "EB",
-                _ => "B"
-            }
-        }
-    }
-
-    fn arithmetic(&self, power_of: i8) -> (i8, f64) {
-        let value: (T, f64) = self.value(); 
-        let bytes: i64 = value.0.into(); 
-        let diviser = value.1; 
-        let positive = bytes > -1;
-        let mut bytes: f64 = if positive { bytes } else { -bytes } as f64;
-        let mut power = 0;
-
-        while bytes >= diviser && power < power_of {
-            bytes = bytes / diviser; 
-            power += 1;
-        }
- 
-        match positive { true => (power, bytes), false => (power, -bytes) }
-    }
-
     fn format(&self, arithmetic: (i8, f64)) -> String {
         let power = arithmetic.0;
         let value = arithmetic.1;
         
         match power {
-            B => format!("{:.0} {}", value, self.unit_suffix(power)),
-            _ => format!("{:.2} {}", value, self.unit_suffix(power)),
+            B => format!("{:.0} {}", value, output::prefix(self, power)),
+            _ => format!("{:.2} {}", value, output::prefix(self, power)),
         }
     }
 
@@ -148,52 +111,57 @@ impl <T>ByteUnit<T> where i64: From<T>, T: Copy {
         } 
     }
 
+    /// Returns a formatted string with up-to a maximum supported power.
+    pub fn max(&self) -> String {
+        self.format(output::arithmetic(self.value(), MAX))
+    }
+
     /// Returns a formatted string with a maximum of the specified power.
     pub fn pow(&self, power_of: i8) -> String {
-        self.format(self.arithmetic(power_of))
+        self.format(output::arithmetic(self.value(), power_of))
     }
 
     /// Returns a formatted string with a maximum power of 1 (Kilo/Kibi) 
     pub fn k(&self) -> String {
-        self.format(self.arithmetic(K))
+        self.format(output::arithmetic(self.value(), K))
     }
 
     /// Returns a formatted string with a maximum power of 2 (Mega/Mebi)
     pub fn m(&self) -> String {
-        self.format(self.arithmetic(M))
+        self.format(output::arithmetic(self.value(), M))
     }
 
     /// Returns a formatted string with a maximum power of 3 (Giga/Gibi) 
     pub fn g(&self) -> String {
-        self.format(self.arithmetic(G))
+        self.format(output::arithmetic(self.value(), G))
     }
 
     /// Returns a formatted string with a maximum power of 4 (Tera/Tebi) 
     pub fn p(&self) -> String {
-        self.format(self.arithmetic(P))
+        self.format(output::arithmetic(self.value(), P))
     }
 
     /// Returns a formatted string with a maximum power of 5 (Peta/Pebi) 
     pub fn t(&self) -> String {
-        self.format(self.arithmetic(T))
+        self.format(output::arithmetic(self.value(), T))
     }
 
     /// Returns a formatted string with a maximum power of 6 (Exa/Exbi)
     pub fn e(&self) -> String {
-        self.format(self.arithmetic(E))
+        self.format(output::arithmetic(self.value(), E))
     }
 }
 
 /// Display implementation with a maximum power of 6 (Exa/Exbi)
 impl<T> Display for ByteUnit<T> where i64: From<T>, T: Copy {
     fn fmt(&self, f:&mut Formatter<'_>) -> std::fmt::Result { 
-        let arithmetic = self.arithmetic(E);
+        let arithmetic = output::arithmetic(self.value(), MAX);
         let bytes = arithmetic.1;
         let index = arithmetic.0;
 
         match index {
-            B => write!(f, "{:.0} {}", bytes, self.unit_suffix(index)),
-            _ => write!(f, "{:.2} {}", bytes, self.unit_suffix(index)),
+            B => write!(f, "{:.0} {}", bytes, output::prefix(self, index)),
+            _ => write!(f, "{:.2} {}", bytes, output::prefix(self, index)),
         }
     }
 }
@@ -208,7 +176,7 @@ impl FromStr for ByteUnit<i64> where i64: From<i64>, i64: Copy {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let input = input_arithmetic(parse_input(s)?);
+        let input = input::arithmetic(input::parse(s)?);
 
         match input.0 {
             true => Ok(ByteUnit::IEC(input.1)), false => Ok(ByteUnit::SI(input.1)) 

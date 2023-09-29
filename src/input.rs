@@ -12,7 +12,7 @@
 
 use crate::simplebyteunit::*;
 
-pub fn parse_input(s: &str) -> Result<(f64, f64, i8, bool), Error> {
+pub fn parse(s: &str) -> Result<(f64, f64, i8, bool), Error> {
     let v = match s.to_lowercase() {
         string if string.ends_with("kib") => ("kib", K, true),
         string if string.ends_with("mib") => ("mib", M, true),
@@ -27,7 +27,7 @@ pub fn parse_input(s: &str) -> Result<(f64, f64, i8, bool), Error> {
         string if string.ends_with("pb") => ("pb", P, false),
         string if string.ends_with("eb") => ("eb", E, false),
         string if string.ends_with("b") => ("b", B, false),
-        _ => Err(Error::InvalidUnit(format!("{s} contains no supported nor valid byteunits.")))? 
+        _ => Err(Error::InvalidUnit(format!("'{s}' contains no supported nor valid byteunits.")))? 
     };
     let s = s.to_lowercase()
        .replace(v.0, "")
@@ -36,11 +36,11 @@ pub fn parse_input(s: &str) -> Result<(f64, f64, i8, bool), Error> {
 
     match s.parse() {
         Ok(val) => Ok((val, multiplier, v.1, v.2)),
-        Err(_) => Err(Error::ErroroneousInput(format!("{s} contains an invalid float or integer value.")))
+        Err(_) => Err(Error::ErroroneousInput(format!("'{s}' contains an invalid float or integer value.")))
     }
 }
 
-pub fn input_arithmetic(input: (f64, f64, i8, bool)) -> (bool, i64) {
+pub fn arithmetic(input: (f64, f64, i8, bool)) -> (bool, i64) {
     let iec = input.3;
     let power_of = input.2;
     let multiplier = input.1;

@@ -1,10 +1,9 @@
 [package]
 name = "simplebyteunit"
 authors = ["Xavier R.M."]
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 readme = "README.md"
 repository = "https://github.com/sapphirusberyl/simplebyteunit"
 license = "Apache-2.0"
-license-file = "LICENSE"
 description = "A thin encapsulate for integer primitives to facilitate a fast, simple, yet ergonomic byteunit implementation."

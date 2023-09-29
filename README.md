@@ -8,7 +8,7 @@ Add 'simplebyteunit' to your 'Cargo.toml':
 
 ```
 [dependencies]
-simplebyteunit = "0.1.0"
+simplebyteunit = "0.2.0"
 ```
 
 ## Example
@@ -26,5 +26,5 @@ println!("{byteunit_var}");
 Output:
 
 ```
-500 KB
+500 kB
 ```

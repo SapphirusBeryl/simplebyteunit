@@ -1,3 +1,5 @@
+[![Rust](https://github.com/SapphirusBeryl/simplebyteunit/actions/workflows/rust.yml/badge.svg)](https://github.com/SapphirusBeryl/simplebyteunit/actions/workflows/rust.yml)
+
 # SimpleByteUnit
 
 SimpleByteUnit is a crate which provides a thin encapsulate for integer primitives to facilitate a fast, simple, yet ergonomic byteunit implementation.

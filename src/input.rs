@@ -40,7 +40,7 @@ pub fn parse(s: &str) -> Result<(f64, f64, i8, bool), Error> {
     }
 }
 
-pub fn arithmetic(input: (f64, f64, i8, bool)) -> (bool, i64) {
+pub fn arithmetic<T>(input: (f64, f64, i8, bool)) -> (bool, T) where T: From<i64> {
     let iec = input.3;
     let power_of = input.2;
     let multiplier = input.1;
@@ -52,5 +52,5 @@ pub fn arithmetic(input: (f64, f64, i8, bool)) -> (bool, i64) {
         power += 1;
     }
 
-    (iec, value as i64)
+    (iec, T::from(value as i64))
 }

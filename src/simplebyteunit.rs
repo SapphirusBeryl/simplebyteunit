@@ -16,7 +16,7 @@ Fast, stupid simple ByteUnit implementation
 Provides a simple way to encapsulate primitives as byteunits.
 */
 
-use std::{fmt::{Display, Formatter}, 
+use std::{fmt::{Display, Formatter, Debug}, 
     ops::{Mul, Div, Add, Sub}, str::FromStr};
 use crate::{input, output};
 
@@ -166,17 +166,31 @@ impl<T> Display for ByteUnit<T> where i64: From<T>, T: Copy {
     }
 }
 
-impl From<&str> for ByteUnit<i64> where i64: From<i64>, i64: Copy { 
+/// Debug implementation with a maximum power of 6 (Exa/Exbi)
+impl<T> Debug for ByteUnit<T> where i64: From<T>, T: Copy {
+    fn fmt(&self, f:&mut Formatter<'_>) -> std::fmt::Result { 
+        let arithmetic = output::arithmetic(self.value(), MAX);
+        let bytes = arithmetic.1;
+        let index = arithmetic.0;
+
+        match index {
+            B => write!(f, "'{:.0} {}'", bytes, output::prefix(self, index)),
+            _ => write!(f, "'{:.2} {}'", bytes, output::prefix(self, index)),
+        }
+    }
+}
+
+impl <T>From<&str> for ByteUnit<T> where i64: From<T>, T: Copy, T: From<i64> { 
     fn from(value: &str) -> Self {
         ByteUnit::from_str(value).unwrap()
     }
 }
 
-impl FromStr for ByteUnit<i64> where i64: From<i64>, i64: Copy { 
+impl <T>FromStr for ByteUnit<T> where i64: From<T>, T: Copy, i64: From<T>, T: From<i64> {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let input = input::arithmetic(input::parse(s)?);
+        let input = input::arithmetic::<T>(input::parse(s)?);
 
         match input.0 {
             true => Ok(ByteUnit::IEC(input.1)), false => Ok(ByteUnit::SI(input.1)) 

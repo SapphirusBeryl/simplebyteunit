@@ -26,40 +26,13 @@ simplebyteunit = "0.2.0"
 
 Generate a human-readable, formatted ByteUnit: 
 
-
 ```rust
 use simplebyteunit::simplebyteunit::*;
 
 let byteunit_var = 500000.to_byteunit(SI);
 
-println!("{byteunit_var}");
-
+assert_eq!(byteunit_var.to_string(), "500.00 kB");
 ```
-
-Output:
-
-```shell
-500 kB
-````
-
-## Parsing strings into ByteUnits
-
-And then you can parse formatted strings back into a ByteUnit
-
-```rust
-use simplebyteunit::simplebyteunit::*;
-
-let byteunit_var: ByteUnit<i64> = "500 kB".into();
-
-println!("{byteunit_var}");
-
-```
-
-Output:
-
-```shell
-500 kB
-````
 
 ## Simple arithmetic operations
 
@@ -68,18 +41,10 @@ Addition, subtraction, multiplication, subtraction, and division are supported o
 ```rust
 use simplebyteunit::simplebyteunit::*;
 
-let a: ByteUnit<i64> = ByteUnit::SI(5000000);
-let b: ByteUnit<i64> = ByteUnit::SI(5000000);
-let byteunit_sum = a + b;
+let a: ByteUnit<i64> = ByteUnit::SI(500000);
+let b: ByteUnit<i64> = ByteUnit::SI(500000);
 
-println!("{byteunit_sum}");
-
-```
-
-Output:
-
-```shell
-1.0 MB
+assert_eq!(a + b, "1.0 MB".into());
 ```
 
 ## Equal/and/or operations
@@ -91,16 +56,9 @@ use simplebyteunit::simplebyteunit::*;
 
 let a: ByteUnit<i64> = "500 KiB".into();
 let b: ByteUnit<i64> = "500 KiB".into();
-let byteunit_bool = a == b;
 
-println!("{byteunit_bool}");
-
+assert_eq!(a == b, true);
 ```
-
-Output:
-```shell
-true
-````
 
 Or operations are also supported on this type:
 
@@ -109,17 +67,9 @@ use simplebyteunit::simplebyteunit::*;
 
 let a: ByteUnit<i64> = 5000000.to_byteunit(IEC);
 let b: ByteUnit<i64> = 5000000.to_byteunit(IEC);
-let byteunit_bool = a >= b;
 
-println!("{byteunit_bool}");
-
+assert_eq!(a >= b, true);
 ```
-
-Output:
-```shell
-true
-```
-
 */
 
 pub mod simplebyteunit;

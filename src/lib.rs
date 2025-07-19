@@ -74,5 +74,5 @@ assert_eq!(a >= b, true);
 
 pub mod simplebyteunit;
 
-mod input;
-mod output;
+mod arithmetic;
+mod suffix;

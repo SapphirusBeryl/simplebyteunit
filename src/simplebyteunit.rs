@@ -15,12 +15,15 @@ Fast, stupid simple ByteUnit implementation
 
 Provides a simple way to encapsulate primitives as byteunits.
 */
-
-use crate::{input, output};
 use std::{
     fmt::{Debug, Display, Formatter},
     ops::{Add, Div, Mul, Sub},
     str::FromStr,
+};
+
+use crate::{
+    arithmetic::{divisor, multiplier},
+    suffix::{parse, suffix},
 };
 
 /// IEC ByteUnit (x*1024)
@@ -114,8 +117,8 @@ where
         let value = arithmetic.1;
 
         match power {
-            B => format!("{:.0} {}", value, output::prefix(self, power)),
-            _ => format!("{:.2} {}", value, output::prefix(self, power)),
+            B => format!("{:.0} {}", value, suffix(self, power)),
+            _ => format!("{:.2} {}", value, suffix(self, power)),
         }
     }
 
@@ -129,42 +132,42 @@ where
 
     /// Returns a formatted string with up-to a maximum supported power.
     pub fn max(&self) -> String {
-        self.format(output::arithmetic(self.value(), MAX))
+        self.format(divisor(self.value(), MAX))
     }
 
     /// Returns a formatted string with a maximum of the specified power.
     pub fn pow(&self, power_of: i8) -> String {
-        self.format(output::arithmetic(self.value(), power_of))
+        self.format(divisor(self.value(), power_of))
     }
 
     /// Returns a formatted string with a maximum power of 1 (Kilo/Kibi)
     pub fn k(&self) -> String {
-        self.format(output::arithmetic(self.value(), K))
+        self.format(divisor(self.value(), K))
     }
 
     /// Returns a formatted string with a maximum power of 2 (Mega/Mebi)
     pub fn m(&self) -> String {
-        self.format(output::arithmetic(self.value(), M))
+        self.format(divisor(self.value(), M))
     }
 
     /// Returns a formatted string with a maximum power of 3 (Giga/Gibi)
     pub fn g(&self) -> String {
-        self.format(output::arithmetic(self.value(), G))
+        self.format(divisor(self.value(), G))
     }
 
     /// Returns a formatted string with a maximum power of 4 (Tera/Tebi)
     pub fn p(&self) -> String {
-        self.format(output::arithmetic(self.value(), P))
+        self.format(divisor(self.value(), P))
     }
 
     /// Returns a formatted string with a maximum power of 5 (Peta/Pebi)
     pub fn t(&self) -> String {
-        self.format(output::arithmetic(self.value(), T))
+        self.format(divisor(self.value(), T))
     }
 
     /// Returns a formatted string with a maximum power of 6 (Exa/Exbi)
     pub fn e(&self) -> String {
-        self.format(output::arithmetic(self.value(), E))
+        self.format(divisor(self.value(), E))
     }
 }
 
@@ -175,13 +178,13 @@ where
     T: Copy,
 {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let arithmetic = output::arithmetic(self.value(), MAX);
+        let arithmetic = divisor(self.value(), MAX);
         let bytes = arithmetic.1;
         let index = arithmetic.0;
 
         match index {
-            B => write!(f, "{:.0} {}", bytes, output::prefix(self, index)),
-            _ => write!(f, "{:.2} {}", bytes, output::prefix(self, index)),
+            B => write!(f, "{:.0} {}", bytes, suffix(self, index)),
+            _ => write!(f, "{:.2} {}", bytes, suffix(self, index)),
         }
     }
 }
@@ -193,13 +196,13 @@ where
     T: Copy,
 {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let arithmetic = output::arithmetic(self.value(), MAX);
+        let arithmetic = divisor(self.value(), MAX);
         let bytes = arithmetic.1;
         let index = arithmetic.0;
 
         match index {
-            B => write!(f, "'{:.0} {}'", bytes, output::prefix(self, index)),
-            _ => write!(f, "'{:.2} {}'", bytes, output::prefix(self, index)),
+            B => write!(f, "'{:.0} {}'", bytes, suffix(self, index)),
+            _ => write!(f, "'{:.2} {}'", bytes, suffix(self, index)),
         }
     }
 }
@@ -225,7 +228,7 @@ where
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let input = input::arithmetic::<T>(input::parse(s)?);
+        let input = multiplier::<T>(parse(s)?);
 
         match input.0 {
             true => Ok(ByteUnit::IEC(input.1)),

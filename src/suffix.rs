@@ -12,6 +12,29 @@
 
 use crate::simplebyteunit::*;
 
+pub fn suffix<'a, T: Copy>(unit: &ByteUnit<T>, i: i8) -> &'a str {
+    match unit {
+        ByteUnit::IEC(_) => match i {
+            K => "KiB",
+            M => "MiB",
+            G => "GiB",
+            T => "TiB",
+            P => "PiB",
+            E => "EiB",
+            _ => "B",
+        },
+        ByteUnit::SI(_) => match i {
+            K => "kB",
+            M => "MB",
+            G => "GB",
+            T => "TB",
+            P => "PB",
+            E => "EB",
+            _ => "B",
+        },
+    }
+}
+
 pub fn parse(s: &str) -> Result<(f64, f64, i8, bool), Error> {
     let v = match s.to_lowercase() {
         string if string.ends_with("kib") => ("kib", K, true),
@@ -29,31 +52,14 @@ pub fn parse(s: &str) -> Result<(f64, f64, i8, bool), Error> {
         string if string.ends_with("b") => ("b", B, false),
         _ => Err(Error::InvalidUnit(format!("'{s}' contains no supported nor valid byteunits.")))?,
     };
-    let s = s.to_lowercase().replace(v.0, "").replace(" ", "");
+    let s = s.to_lowercase().replace(v.0, "");
     let multiplier = match v.2 {
         true => 1024.0,
         false => 1000.0,
     };
 
-    match s.parse() {
+    match s.trim().parse() {
         Ok(val) => Ok((val, multiplier, v.1, v.2)),
         Err(_) => Err(Error::ErroroneousInput(format!("'{s}' contains an invalid float or integer value."))),
     }
-}
-
-pub fn arithmetic<T>(input: (f64, f64, i8, bool)) -> (bool, T)
-where
-    T: From<i64>, {
-    let iec = input.3;
-    let power_of = input.2;
-    let multiplier = input.1;
-    let mut value = input.0;
-    let mut power: i8 = 0;
-
-    while power < power_of {
-        value *= multiplier;
-        power += 1;
-    }
-
-    (iec, T::from(value as i64))
 }

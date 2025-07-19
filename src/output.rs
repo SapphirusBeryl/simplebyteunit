@@ -1,7 +1,7 @@
 /*  
  * SimpleByteUnit
  * 
- * Copyright 2023 Xavier R.M.
+ * Copyright (C) 2023-2025 Xavier Moffett <sapphirus@azorium.net>
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ pub fn arithmetic<T: Copy>(value: (T, f64), power_of: i8) -> (i8, f64) where i64
     let mut power = 0;
 
     while bytes >= diviser && power < power_of {
-        bytes = bytes / diviser; 
+        bytes /= diviser; 
         power += 1;
     }
  

@@ -51,7 +51,7 @@ where
     let mut power: i8 = 0;
 
     while power < power_of {
-        value = value * multiplier;
+        value *= multiplier;
         power += 1;
     }
 

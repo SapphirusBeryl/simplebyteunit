@@ -9,7 +9,9 @@
  *
  *	http://www.apache.org/licenses/LICENSE-2.0
  */
-use crate::simplebyteunit::*;
+
+use simplebyteunit::simplebyteunit::*;
+use simplebyteunit::simplebyteunit::ToByteUnit;
 
 const POSITIVE_5B: i64 = 5000;
 const NEGATIVE_5B: i64  = -5000;

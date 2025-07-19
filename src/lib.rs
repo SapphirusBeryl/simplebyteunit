@@ -76,4 +76,3 @@ pub mod simplebyteunit;
 
 mod input;
 mod output;
-mod test;

@@ -9,7 +9,9 @@ on:
       - synchronize
     branches:
       - master
-
+  push:
+    branches:
+      - master
 env: 
   CARGO_TERM_COLOR: always
   PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/github/home/.cargo/bin
@@ -18,7 +20,7 @@ env:
 jobs:
   checkfmt:
     name: Check format
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     container:
       image: alpine
     strategy:
@@ -38,7 +40,7 @@ jobs:
         run: cargo fmt --check
   check:
     name: Check release
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     container:
       image: alpine
     strategy:

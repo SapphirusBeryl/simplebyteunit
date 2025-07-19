@@ -1,8 +1,8 @@
-/*  
+/*
  * SimpleByteUnit
  *
  * Copyright (C) 2023-2025 Xavier Moffett <sapphirus@azorium.net>
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -10,12 +10,11 @@
  *	http://www.apache.org/licenses/LICENSE-2.0
  */
 
-use simplebyteunit::simplebyteunit::*;
-use simplebyteunit::simplebyteunit::ToByteUnit;
+use simplebyteunit::simplebyteunit::{ToByteUnit, *};
 
 const POSITIVE_5B: i64 = 5000;
-const NEGATIVE_5B: i64  = -5000;
-const POSITIVE_5K: i64  = 5000000;
+const NEGATIVE_5B: i64 = -5000;
+const POSITIVE_5K: i64 = 5000000;
 const NEGATIVE_5K: i64 = -5000000;
 const POSITIVE_5G: i64 = 5000000000;
 const NEGATIVE_5G: i64 = -5000000000;
@@ -28,52 +27,51 @@ const NEGATIVE_5E: i64 = -5000000000000000000;
 
 #[test]
 fn format_all() {
-    assert_eq!(NEGATIVE_5E.to_byteunit(SI).to_string(), "-5.00 EB");   
-    assert_eq!(POSITIVE_5E.to_byteunit(SI).to_string(), "5.00 EB");  
-    assert_eq!(NEGATIVE_5P.to_byteunit(SI).to_string(), "-5.00 PB");   
-    assert_eq!(POSITIVE_5P.to_byteunit(SI).to_string(), "5.00 PB");  
-    assert_eq!(NEGATIVE_5T.to_byteunit(SI).to_string(), "-5.00 TB");  
-    assert_eq!(POSITIVE_5T.to_byteunit(SI).to_string(), "5.00 TB");  
-    assert_eq!(NEGATIVE_5G.to_byteunit(SI).to_string(), "-5.00 GB");  
-    assert_eq!(POSITIVE_5G.to_byteunit(SI).to_string(), "5.00 GB");  
-    assert_eq!(POSITIVE_5K.to_byteunit(SI).to_string(), "5.00 MB"); 
-    assert_eq!(NEGATIVE_5K.to_byteunit(SI).to_string(), "-5.00 MB"); 
+    assert_eq!(NEGATIVE_5E.to_byteunit(SI).to_string(), "-5.00 EB");
+    assert_eq!(POSITIVE_5E.to_byteunit(SI).to_string(), "5.00 EB");
+    assert_eq!(NEGATIVE_5P.to_byteunit(SI).to_string(), "-5.00 PB");
+    assert_eq!(POSITIVE_5P.to_byteunit(SI).to_string(), "5.00 PB");
+    assert_eq!(NEGATIVE_5T.to_byteunit(SI).to_string(), "-5.00 TB");
+    assert_eq!(POSITIVE_5T.to_byteunit(SI).to_string(), "5.00 TB");
+    assert_eq!(NEGATIVE_5G.to_byteunit(SI).to_string(), "-5.00 GB");
+    assert_eq!(POSITIVE_5G.to_byteunit(SI).to_string(), "5.00 GB");
+    assert_eq!(POSITIVE_5K.to_byteunit(SI).to_string(), "5.00 MB");
+    assert_eq!(NEGATIVE_5K.to_byteunit(SI).to_string(), "-5.00 MB");
     assert_eq!(POSITIVE_5B.to_byteunit(SI).to_string(), "5.00 kB");
     assert_eq!(NEGATIVE_5B.to_byteunit(SI).to_string(), "-5.00 kB");
-    assert_eq!(NEGATIVE_5E.to_byteunit(IEC).to_string(), "-4.34 EiB");   
-    assert_eq!(POSITIVE_5E.to_byteunit(IEC).to_string(), "4.34 EiB");  
-    assert_eq!(NEGATIVE_5P.to_byteunit(IEC).to_string(), "-4.44 PiB");   
-    assert_eq!(POSITIVE_5P.to_byteunit(IEC).to_string(), "4.44 PiB");  
+    assert_eq!(NEGATIVE_5E.to_byteunit(IEC).to_string(), "-4.34 EiB");
+    assert_eq!(POSITIVE_5E.to_byteunit(IEC).to_string(), "4.34 EiB");
+    assert_eq!(NEGATIVE_5P.to_byteunit(IEC).to_string(), "-4.44 PiB");
+    assert_eq!(POSITIVE_5P.to_byteunit(IEC).to_string(), "4.44 PiB");
     assert_eq!(NEGATIVE_5T.to_byteunit(IEC).to_string(), "-4.55 TiB");
-    assert_eq!(NEGATIVE_5T.to_byteunit(IEC).to_string(), "-4.55 TiB");  
-    assert_eq!(POSITIVE_5T.to_byteunit(IEC).to_string(), "4.55 TiB");  
-    assert_eq!(NEGATIVE_5G.to_byteunit(IEC).to_string(), "-4.66 GiB");  
-    assert_eq!(POSITIVE_5G.to_byteunit(IEC).to_string(), "4.66 GiB");  
-    assert_eq!(POSITIVE_5K.to_byteunit(IEC).to_string(), "4.77 MiB"); 
-    assert_eq!(NEGATIVE_5K.to_byteunit(IEC).to_string(), "-4.77 MiB"); 
+    assert_eq!(NEGATIVE_5T.to_byteunit(IEC).to_string(), "-4.55 TiB");
+    assert_eq!(POSITIVE_5T.to_byteunit(IEC).to_string(), "4.55 TiB");
+    assert_eq!(NEGATIVE_5G.to_byteunit(IEC).to_string(), "-4.66 GiB");
+    assert_eq!(POSITIVE_5G.to_byteunit(IEC).to_string(), "4.66 GiB");
+    assert_eq!(POSITIVE_5K.to_byteunit(IEC).to_string(), "4.77 MiB");
+    assert_eq!(NEGATIVE_5K.to_byteunit(IEC).to_string(), "-4.77 MiB");
     assert_eq!(POSITIVE_5B.to_byteunit(IEC).to_string(), "4.88 KiB");
     assert_eq!(NEGATIVE_5B.to_byteunit(IEC).to_string(), "-4.88 KiB");
- 
 }
 
 #[test]
 fn bytes() {
-    assert_eq!(NEGATIVE_5B.to_byteunit(IEC).pow(B), "-5000 B");   
-    assert_eq!(NEGATIVE_5B.to_byteunit(SI).pow(B), "-5000 B");   
-    assert_eq!(POSITIVE_5B.to_byteunit(IEC).pow(B), "5000 B");   
-    assert_eq!(POSITIVE_5B.to_byteunit(SI).pow(B), "5000 B");     
-    assert_eq!(NEGATIVE_5E.to_byteunit(IEC).pow(B), "-5000000000000000000 B");   
-    assert_eq!(NEGATIVE_5E.to_byteunit(SI).pow(B), "-5000000000000000000 B");   
-    assert_eq!(POSITIVE_5E.to_byteunit(IEC).pow(B), "5000000000000000000 B");   
-    assert_eq!(POSITIVE_5E.to_byteunit(SI).pow(B), "5000000000000000000 B");    
+    assert_eq!(NEGATIVE_5B.to_byteunit(IEC).pow(B), "-5000 B");
+    assert_eq!(NEGATIVE_5B.to_byteunit(SI).pow(B), "-5000 B");
+    assert_eq!(POSITIVE_5B.to_byteunit(IEC).pow(B), "5000 B");
+    assert_eq!(POSITIVE_5B.to_byteunit(SI).pow(B), "5000 B");
+    assert_eq!(NEGATIVE_5E.to_byteunit(IEC).pow(B), "-5000000000000000000 B");
+    assert_eq!(NEGATIVE_5E.to_byteunit(SI).pow(B), "-5000000000000000000 B");
+    assert_eq!(POSITIVE_5E.to_byteunit(IEC).pow(B), "5000000000000000000 B");
+    assert_eq!(POSITIVE_5E.to_byteunit(SI).pow(B), "5000000000000000000 B");
 }
 
 #[test]
 fn k() {
-    assert_eq!(NEGATIVE_5K.to_byteunit(IEC).pow(K), "-4882.81 KiB");  
+    assert_eq!(NEGATIVE_5K.to_byteunit(IEC).pow(K), "-4882.81 KiB");
     assert_eq!(POSITIVE_5K.to_byteunit(IEC).pow(K), "4882.81 KiB");
-    assert_eq!(NEGATIVE_5K.to_byteunit(SI).pow(K), "-5000.00 kB"); 
-    assert_eq!(POSITIVE_5K.to_byteunit(SI).pow(K), "5000.00 kB"); 
+    assert_eq!(NEGATIVE_5K.to_byteunit(SI).pow(K), "-5000.00 kB");
+    assert_eq!(POSITIVE_5K.to_byteunit(SI).pow(K), "5000.00 kB");
 }
 
 #[test]
@@ -87,9 +85,9 @@ fn m() {
 #[test]
 fn g() {
     assert_eq!(NEGATIVE_5T.to_byteunit(IEC).pow(G), "-4656.61 GiB");
-    assert_eq!(POSITIVE_5T.to_byteunit(IEC).pow(G), "4656.61 GiB");   
+    assert_eq!(POSITIVE_5T.to_byteunit(IEC).pow(G), "4656.61 GiB");
     assert_eq!(NEGATIVE_5T.to_byteunit(SI).pow(G), "-5000.00 GB");
-    assert_eq!(POSITIVE_5T.to_byteunit(SI).pow(G), "5000.00 GB");   
+    assert_eq!(POSITIVE_5T.to_byteunit(SI).pow(G), "5000.00 GB");
 }
 
 #[test]
@@ -102,24 +100,24 @@ fn t() {
 
 #[test]
 fn p() {
-    assert_eq!(NEGATIVE_5E.to_byteunit(IEC).pow(P), "-4440.89 PiB"); 
-    assert_eq!(POSITIVE_5E.to_byteunit(IEC).pow(P), "4440.89 PiB");      
-    assert_eq!(NEGATIVE_5E.to_byteunit(SI).pow(P), "-5000.00 PB");  
-    assert_eq!(POSITIVE_5E.to_byteunit(SI).pow(P), "5000.00 PB");    
+    assert_eq!(NEGATIVE_5E.to_byteunit(IEC).pow(P), "-4440.89 PiB");
+    assert_eq!(POSITIVE_5E.to_byteunit(IEC).pow(P), "4440.89 PiB");
+    assert_eq!(NEGATIVE_5E.to_byteunit(SI).pow(P), "-5000.00 PB");
+    assert_eq!(POSITIVE_5E.to_byteunit(SI).pow(P), "5000.00 PB");
 }
 
 #[test]
 fn e() {
-    assert_eq!(NEGATIVE_5E.to_byteunit(IEC).pow(E), "-4.34 EiB");   
-    assert_eq!(POSITIVE_5E.to_byteunit(IEC).pow(E), "4.34 EiB");    
-    assert_eq!(NEGATIVE_5E.to_byteunit(SI).pow(E), "-5.00 EB");  
-    assert_eq!(POSITIVE_5E.to_byteunit(SI).pow(E), "5.00 EB");  
+    assert_eq!(NEGATIVE_5E.to_byteunit(IEC).pow(E), "-4.34 EiB");
+    assert_eq!(POSITIVE_5E.to_byteunit(IEC).pow(E), "4.34 EiB");
+    assert_eq!(NEGATIVE_5E.to_byteunit(SI).pow(E), "-5.00 EB");
+    assert_eq!(POSITIVE_5E.to_byteunit(SI).pow(E), "5.00 EB");
 }
 
 #[test]
 fn eq() {
-   assert_eq!(POSITIVE_5G.to_byteunit(SI) == POSITIVE_5G.to_byteunit(SI), true); 
-   assert_eq!(POSITIVE_5B.to_byteunit(SI) == POSITIVE_5G.to_byteunit(SI), false);
+    assert_eq!(POSITIVE_5G.to_byteunit(SI) == POSITIVE_5G.to_byteunit(SI), true);
+    assert_eq!(POSITIVE_5B.to_byteunit(SI) == POSITIVE_5G.to_byteunit(SI), false);
 }
 
 #[test]
@@ -156,7 +154,6 @@ fn sub() {
     let division = a - b;
 
     assert_eq!(division.to_string(), "0 B");
-
 }
 
 #[test]

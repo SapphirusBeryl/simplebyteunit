@@ -1,8 +1,8 @@
-/*  
+/*
  * SimpleByteUnit
- * 
+ *
  * Copyright (C) 2023-2025 Xavier Moffett <sapphirus@azorium.net>
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ simplebyteunit = "0.2.0"
 
 ## Example
 
-Generate a human-readable, formatted ByteUnit: 
+Generate a human-readable, formatted ByteUnit:
 
 ```rust
 use simplebyteunit::simplebyteunit::*;

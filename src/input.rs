@@ -1,8 +1,8 @@
-/*  
+/*
  * SimpleByteUnit
- * 
+ *
  * Copyright (C) 2023-2025 Xavier Moffett <sapphirus@azorium.net>
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,20 +27,23 @@ pub fn parse(s: &str) -> Result<(f64, f64, i8, bool), Error> {
         string if string.ends_with("pb") => ("pb", P, false),
         string if string.ends_with("eb") => ("eb", E, false),
         string if string.ends_with("b") => ("b", B, false),
-        _ => Err(Error::InvalidUnit(format!("'{s}' contains no supported nor valid byteunits.")))? 
+        _ => Err(Error::InvalidUnit(format!("'{s}' contains no supported nor valid byteunits.")))?,
     };
-    let s = s.to_lowercase()
-       .replace(v.0, "")
-       .replace(" ", "");
-    let multiplier = match v.2 { true => 1024.0, false => 1000.0 };
+    let s = s.to_lowercase().replace(v.0, "").replace(" ", "");
+    let multiplier = match v.2 {
+        true => 1024.0,
+        false => 1000.0,
+    };
 
     match s.parse() {
         Ok(val) => Ok((val, multiplier, v.1, v.2)),
-        Err(_) => Err(Error::ErroroneousInput(format!("'{s}' contains an invalid float or integer value.")))
+        Err(_) => Err(Error::ErroroneousInput(format!("'{s}' contains an invalid float or integer value."))),
     }
 }
 
-pub fn arithmetic<T>(input: (f64, f64, i8, bool)) -> (bool, T) where T: From<i64> {
+pub fn arithmetic<T>(input: (f64, f64, i8, bool)) -> (bool, T)
+where
+    T: From<i64>, {
     let iec = input.3;
     let power_of = input.2;
     let multiplier = input.1;

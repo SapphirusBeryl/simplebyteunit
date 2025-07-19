@@ -1,0 +1,62 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - ready_for_review
+      - synchronize
+    branches:
+      - master
+
+env: 
+  CARGO_TERM_COLOR: always
+  PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/github/home/.cargo/bin
+  RUSTFLAGS: -C target-feature=-crt-static
+
+jobs:
+  checkfmt:
+    name: Check format
+    runs-on: ubuntu
+    container:
+      image: alpine
+    strategy:
+      matrix:
+        toolchain:
+          - nightly
+    steps:
+      - name: Install packages
+        run: apk add --no-cache rustup nodejs git
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install rustup
+        run: rustup-init -y --default-toolchain none
+      - name: Install toolchain
+        run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+      - name: Check format
+        run: cargo fmt --check
+  check:
+    name: Check release
+    runs-on: ubuntu
+    container:
+      image: alpine
+    strategy:
+      matrix:
+        toolchain:
+          - stable
+    steps:
+      - name: Install packages
+        run: apk add --no-cache rustup nodejs git build-base pkgconfig
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Initialize rustup
+        run: rustup-init -y --default-toolchain none
+      - name: Install toolchain
+        run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+      - name: Lint release
+        run: cargo clippy --release -- -Dwarnings
+      - name: Build release
+        run: cargo build --release
+      - name: Test release
+        run: cargo test --release

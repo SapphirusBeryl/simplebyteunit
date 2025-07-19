@@ -19,7 +19,7 @@ Add 'simplebyteunit' to your 'Cargo.toml':
 
 ```toml
 [dependencies]
-simplebyteunit = "0.2.0"
+simplebyteunit = "0.3.0"
 ```
 
 ## Example
